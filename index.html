@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ストーリーEnglish 書く力編</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="書く力編">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f2fa; --card:#ffffff; --ink:#2c2440; --muted:#7a7392; --line:#e0dbef;
+  --indigo:#3d2b8f; --indigo2:#5a43c4; --soft:#ece8fa; --gold:#d29a2e; --gold-soft:#fbf0d7;
+  --bad:#c0392b; --mid:#d4880f; --ok:#1e8e5a; --paper:#fffdf6;
+  --shadow:0 8px 26px rgba(46,32,110,.18);
+}
+[data-theme="dark"]{
+  --bg:#16131f; --card:#221d33; --ink:#ece8f7; --muted:#a79fc2; --line:#3a3352;
+  --indigo:#8f7ff0; --indigo2:#a794ff; --soft:#2c2547; --gold:#e3b04b; --gold-soft:#3a3018;
+  --paper:#262040; --shadow:0 8px 26px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+body{margin:0; font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI","Noto Sans JP",sans-serif; background:var(--bg); color:var(--ink); padding-bottom:30px}
+button{font-family:inherit; cursor:pointer}
+input,select,textarea{font-family:inherit; font-size:16px; color:var(--ink)}
+header{position:sticky; top:0; z-index:40; background:linear-gradient(120deg,#2c1c6e,#3d2b8f 60%,#5a43c4); color:#fff; padding:10px 16px; display:flex; align-items:center; gap:12px; box-shadow:0 2px 10px rgba(30,18,90,.35)}
+header img{width:38px; height:38px; border-radius:9px}
+header .ttl{font-size:17px; font-weight:700}
+header .sub{font-size:11px; opacity:.9}
+header .sp{flex:1}
+.hbtn{background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.3); border-radius:9px; padding:7px 12px; font-size:13px}
+main{max-width:860px; margin:0 auto; padding:16px 14px 30px}
+.view{display:none}
+.view.active{display:block; animation:fade .18s ease}
+@keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
+h2.sec{font-size:16px; margin:20px 2px 10px}
+h2.sec:first-child{margin-top:2px}
+.card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:12px}
+.btn{display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:9px 14px; font-size:14px; font-weight:600}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--indigo2); border-color:var(--indigo2); color:#fff}
+.btn.gold{background:linear-gradient(120deg,#c08c22,#d29a2e); border-color:#c08c22; color:#fff}
+.btn:disabled{opacity:.45; cursor:default}
+.btn.small{padding:6px 10px; font-size:13px; border-radius:8px}
+.row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.grow{flex:1}
+.muted{color:var(--muted); font-size:13px}
+.small{font-size:12px}
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px}
+.stat{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; text-align:center}
+.stat b{font-size:24px; display:block; color:var(--indigo2)}
+.stat span{font-size:12px; color:var(--muted)}
+.deckcard{display:flex; gap:12px; align-items:center; width:100%; text-align:left; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:10px; color:var(--ink)}
+.deckcard .nm{font-size:16px; font-weight:700}
+.deckcard .ds{font-size:12.5px; color:var(--muted); margin-top:2px}
+.deckcard .cnt{font-size:13px; font-weight:700; color:var(--indigo2); white-space:nowrap}
+.progressbar{height:8px; background:var(--soft); border-radius:99px; overflow:hidden; margin-top:8px}
+.progressbar>i{display:block; height:100%; background:linear-gradient(90deg,var(--indigo2),var(--gold))}
+.meaningCard{text-align:center; padding:18px 14px}
+.meaningCard .m{font-size:26px; font-weight:800; line-height:1.4}
+.meaningCard .ex{font-size:14px; color:var(--muted); margin-top:10px; line-height:1.7; display:none}
+.meaningCard .ex.show{display:block}
+.meaningCard .ex b{color:var(--indigo2)}
+.phaseTag{display:inline-block; font-size:12px; font-weight:700; padding:3px 10px; border-radius:99px; background:var(--soft); color:var(--indigo2); border:1px solid #cfc4f2}
+.phaseTag.goldp{background:var(--gold-soft); color:#8a6d14; border-color:#e8d29a}
+.canvasWrap{position:relative; width:100%; height:250px; border:2px solid var(--line); border-radius:14px; background:var(--paper); overflow:hidden; touch-action:none}
+.canvasWrap canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
+#inkCanvas{touch-action:none}
+.coverRow{display:flex; align-items:center; gap:10px; margin-top:10px; font-size:13.5px}
+.coverRow .bar{flex:1; height:12px; background:var(--soft); border-radius:99px; overflow:hidden}
+.coverRow .bar>i{display:block; height:100%; background:linear-gradient(90deg,var(--indigo2),var(--gold)); width:0%}
+.coverRow b{min-width:86px; text-align:right}
+.markRow{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:12px}
+.markBtn{border-radius:14px; padding:16px 6px; font-size:20px; font-weight:800; border:2px solid var(--line); background:var(--card); color:var(--ink)}
+.markBtn.g{border-color:#a8dcc0; color:var(--ok)}
+.markBtn.m{border-color:#f0d9a8; color:var(--mid)}
+.markBtn.b{border-color:#f0b8b0; color:var(--bad)}
+.markBtn small{display:block; font-size:11.5px; font-weight:600; color:var(--muted); margin-top:3px}
+.seg{display:inline-flex; border:1px solid var(--line); border-radius:11px; overflow:hidden}
+.seg button{border:none; background:var(--card); color:var(--muted); padding:9px 16px; font-size:14px; font-weight:700}
+.seg button.on{background:var(--indigo2); color:#fff}
+.dots{display:flex; gap:5px; justify-content:center; margin:6px 0 2px}
+.dots i{width:9px; height:9px; border-radius:50%; background:var(--line)}
+.dots i.done{background:var(--indigo2)}
+.dots i.now{background:var(--gold); transform:scale(1.25)}
+.wordrow{display:flex; align-items:center; gap:9px; border:1px solid var(--line); border-radius:11px; padding:9px 12px; margin-bottom:7px; background:var(--card)}
+.wordrow .w{font-weight:700; font-size:15px}
+.badge{display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:99px; border:1px solid var(--line); color:var(--muted)}
+.badge.g{background:#e6f6ec; color:var(--ok); border-color:#a8dcc0}
+.badge.m{background:#fdf3da; color:var(--mid); border-color:#f0d9a8}
+.badge.b{background:#fdecea; color:var(--bad); border-color:#f0b8b0}
+textarea.ta{width:100%; border:1px solid var(--line); background:var(--card); border-radius:12px; padding:12px; resize:vertical; line-height:1.8}
+select,.txtin{border:1px solid var(--line); background:var(--card); border-radius:10px; padding:9px 10px}
+#toast{position:fixed; left:50%; bottom:34px; transform:translate(-50%,20px); background:#241a4e; color:#fff; padding:11px 18px; border-radius:99px; font-size:14px; font-weight:600; opacity:0; pointer-events:none; transition:all .25s; z-index:90; box-shadow:var(--shadow); max-width:88vw; text-align:center}
+#toast.show{opacity:1; transform:translate(-50%,0)}
+.empty{padding:30px 16px; text-align:center; color:var(--muted)}
+.empty .big{font-size:40px; margin-bottom:8px}
+details.help{border:1px solid var(--line); border-radius:12px; padding:10px 14px; margin-bottom:10px; background:var(--card)}
+details.help summary{font-weight:700; cursor:pointer}
+details.help p,details.help li{font-size:13.5px; line-height:1.75}
+.summaryMarks{display:flex; gap:12px; justify-content:center; font-size:17px; font-weight:800; margin:10px 0}
+</style>
+</head>
+<body>
+<header>
+  <img src="icon.png" alt="">
+  <div>
+    <div class="ttl">ストーリーEnglish 書く力編</div>
+    <div class="sub">手で書いて覚える、スペルと筆記体</div>
+  </div>
+  <div class="sp"></div>
+  <button class="hbtn" id="themeBtn">🌙 ダーク</button>
+</header>
+<main>
+  <!-- ホーム -->
+  <section class="view" id="view-home">
+    <div class="stats">
+      <div class="stat"><b id="stToday">0</b><span>今日書いた語</span></div>
+      <div class="stat"><b id="stStreak">0</b><span>連続日数</span></div>
+      <div class="stat"><b id="stMastered">0</b><span>覚えた語（◎）</span></div>
+    </div>
+    <h2 class="sec">📚 単語デッキを選ぶ（1回10語）</h2>
+    <div id="deckList"></div>
+    <div class="card">
+      <b>✍️ カスタムデッキ</b>
+      <p class="muted small" style="line-height:1.75">自分の単語セットを取り込めます。1行に1語、「英単語,意味」の形で貼り付けてください（CSVファイルの読み込みもできます）。</p>
+      <textarea class="ta" id="customTa" rows="4" placeholder="adventure,冒険&#10;journey,旅"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button class="btn primary" id="customSaveBtn">取り込む</button>
+        <button class="btn" id="customFileBtn">CSVファイルから</button>
+        <input type="file" id="customFile" accept=".csv,.txt,text/csv,text/plain" style="display:none">
+        <span class="muted small" id="customState"></span>
+      </div>
+    </div>
+    <details class="help"><summary>使い方</summary>
+      <p>1つの単語につき、3つのステップで練習します。</p>
+      <p><b>① なぞる</b>：うっすら表示された見本をなぞります。見本の上をどれだけ通れたかが「なぞり度」として表示されます。<br>
+      <b>② 思い出して書く</b>：見本が消えます。意味と音を頼りに、思い出して書きます。分からなければ「パス」で見直し対象にできます。<br>
+      <b>③ 答え合わせ</b>：見本が流れるように表示され、発音も流れます。自分の字と見比べて、◎（書けた）△（あいまい）×（書けなかった）で自己判定します。△と×の単語は、次回に優先して出題されます。</p>
+      <p>書体は「筆記体」と「ブロック体」を切り替えられます。指でもタッチペンでも書けます。</p>
+    </details>
+    <div class="card" style="text-align:center">
+      <img src="icon.png" style="width:52px;height:52px;border-radius:12px" alt="">
+      <p class="muted small" style="margin:6px 0 0;line-height:1.8">読む力（ストーリーEnglish）・聞く力編の姉妹アプリです。<br>このアプリはAIアシスタント「Muse」と一緒に作りました。</p>
+    </div>
+  </section>
+
+  <!-- 練習 -->
+  <section class="view" id="view-practice">
+    <div class="row" style="margin-bottom:8px">
+      <button class="btn small" id="quitBtn">← やめる</button>
+      <span class="muted" id="sessLabel">―</span>
+      <span class="grow"></span>
+      <div class="seg" id="styleSeg">
+        <button data-style="cursive" class="on">筆記体</button>
+        <button data-style="print">ブロック体</button>
+      </div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="card meaningCard">
+      <div class="row" style="justify-content:center; margin-bottom:8px"><span class="phaseTag" id="phaseTag">① なぞろう</span></div>
+      <div class="m" id="meaningText">―</div>
+      <div class="row" style="justify-content:center; margin-top:10px">
+        <button class="btn" id="speakBtn">🔊 発音を聞く</button>
+        <button class="btn" id="hintBtn" style="display:none">💡 ヒント（最初の文字）</button>
+      </div>
+      <div class="ex" id="exampleText"></div>
+    </div>
+    <div class="canvasWrap" id="canvasWrap">
+      <canvas id="bgCanvas"></canvas>
+      <canvas id="inkCanvas"></canvas>
+    </div>
+    <div class="coverRow" id="coverRow"><span>なぞり度</span><div class="bar"><i id="coverBar"></i></div><b id="coverPct">0%</b></div>
+    <div class="row" style="margin-top:12px" id="editRow">
+      <button class="btn" id="undoBtn">↩ 1画もどす</button>
+      <button class="btn" id="clearBtn">🗑 全部消す</button>
+      <span class="grow"></span>
+      <button class="btn gold" id="phaseBtn" style="padding:11px 18px">なぞり終わり →</button>
+    </div>
+    <div class="markRow" id="markRow" style="display:none">
+      <button class="markBtn g" data-mark="good">◎<small>書けた</small></button>
+      <button class="markBtn m" data-mark="mid">△<small>あいまい</small></button>
+      <button class="markBtn b" data-mark="bad">×<small>書けなかった</small></button>
+    </div>
+  </section>
+
+  <!-- 結果 -->
+  <section class="view" id="view-result">
+    <div class="card" style="text-align:center; padding:26px 16px">
+      <div style="font-size:42px">🎉</div>
+      <h2 style="margin:8px 0 2px">10語、おつかれさまでした</h2>
+      <div class="summaryMarks">
+        <span style="color:var(--ok)">◎ <span id="sumGood">0</span></span>
+        <span style="color:var(--mid)">△ <span id="sumMid">0</span></span>
+        <span style="color:var(--bad)">× <span id="sumBad">0</span></span>
+      </div>
+      <p class="muted" id="sumNote"></p>
+      <div class="row" style="justify-content:center; margin-top:14px">
+        <button class="btn primary" id="againBtn">もう10語つづける</button>
+        <button class="btn" id="homeBtn">ホームへ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 単語一覧 -->
+  <section class="view" id="view-words">
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn small" id="wordsBackBtn">← ホームへ</button>
+      <select id="wordsDeckSel" class="grow"></select>
+    </div>
+    <div id="wordList"></div>
+    <div class="card">
+      <b>記録の管理</b>
+      <p class="muted small">このデッキの判定記録（◎△×）を消して、最初から練習し直すことができます。</p>
+      <button class="btn small" id="resetDeckBtn">このデッキの記録をリセット</button>
+    </div>
+  </section>
+</main>
+<div id="toast"></div>
+<script>
+"use strict";
+/* ============ 基本デッキ（中学基本語） ============ */
+const BASIC = [
+["apple","りんご"],["book","本"],["cat","猫"],["dog","犬"],["egg","卵"],["fish","魚"],["girl","女の子"],["house","家"],["ink","インク"],["juice","ジュース"],
+["kite","凧"],["lion","ライオン"],["moon","月"],["nose","鼻"],["orange","オレンジ"],["pen","ペン"],["queen","女王"],["rain","雨"],["sun","太陽"],["tree","木"],
+["umbrella","傘"],["voice","声"],["watch","腕時計・見る"],["year","年"],["zoo","動物園"],["bird","鳥"],["cake","ケーキ"],["door","ドア"],["ear","耳"],["flower","花"],
+["garden","庭"],["hand","手"],["island","島"],["jacket","ジャケット"],["key","鍵"],["lake","湖"],["map","地図"],["night","夜"],["ocean","海・大洋"],["park","公園"],
+["question","質問"],["river","川"],["school","学校"],["table","テーブル・表"],["uncle","おじ"],["village","村"],["window","窓"],["young","若い"],["animal","動物"],["bread","パン"],
+["cloud","雲"],["dream","夢"],["earth","地球"],["family","家族"],["glass","ガラス・コップ"],["happy","うれしい"],["idea","考え"],["job","仕事"],["kind","親切な・種類"],["letter","手紙・文字"],
+["morning","朝"],["name","名前"],["office","事務所"],["people","人々"],["quiet","静かな"],["room","部屋"],["story","物語"],["teacher","先生"],["under","〜の下に"],["visit","訪れる"],
+["water","水"],["word","単語・言葉"],["world","世界"],["write","書く"],["read","読む"],["walk","歩く"],["run","走る"],["swim","泳ぐ"],["sing","歌う"],["play","遊ぶ・演奏する"],
+["study","勉強する"],["learn","学ぶ・覚える"],["speak","話す"],["listen","聞く"],["look","見る・〜に見える"],["make","作る"],["take","取る・持っていく"],["come","来る"],["go","行く"],["see","見る・分かる"],
+["know","知っている"],["think","思う・考える"],["want","欲しい・〜したい"],["like","好き・〜のような"],["love","大好き・愛する"],["help","助ける・手伝う"],["open","開ける・開く"],["close","閉める"],["start","始める"],["finish","終える"],
+["beautiful","美しい"],["big","大きい"],["small","小さい"],["long","長い"],["short","短い"],["high","高い"],["new","新しい"],["old","古い・歳をとった"],["good","良い"],["bad","悪い"],
+["hot","熱い・暑い"],["cold","冷たい・寒い"],["warm","暖かい"],["cool","涼しい"],["easy","やさしい・簡単な"],["difficult","難しい"],["busy","忙しい"],["free","自由な・無料の"],["sure","確信して"],["true","本当の"],
+["today","今日"],["tomorrow","明日"],["yesterday","昨日"],["now","今"],["here","ここ"],["there","そこ"],["where","どこ"],["when","いつ"],["what","何"],["who","誰"]
+].map(([w,m]) => ({w, m, s:""}));
+const STORY_WORDS = {"1": [{"w": "retired", "m": "定年退職した", "s": "He retired from his school last spring."}, {"w": "lighthouse", "m": "灯台", "s": "A young boy stood in front of a lighthouse."}, {"w": "suddenly", "m": "突然", "s": "Then, suddenly, he saw a light."}, {"w": "shine", "m": "輝く・光る", "s": "The light never shines."}, {"w": "dark", "m": "暗い", "s": "He looked at the dark lighthouse."}, {"w": "moment", "m": "一瞬・瞬間", "s": "It shone for a moment."}, {"w": "smell", "m": "においがする", "s": "The air smelled of the sea."}, {"w": "slowly", "m": "ゆっくりと", "s": "He said slowly."}, {"w": "closed", "m": "閉鎖された", "s": "It closed twenty years ago."}, {"w": "sold", "m": "（sellの過去形）売った", "s": "He sold drinks and maps in a small shop."}, {"w": "station", "m": "駅", "s": "Momo lives at a small station."}, {"w": "wait", "m": "待つ", "s": "She waits for the train."}, {"w": "passenger", "m": "乗客", "s": "The passengers know her name."}, {"w": "bench", "m": "ベンチ", "s": "She sleeps on a warm bench."}, {"w": "lost", "m": "道に迷った・失くした", "s": "A little boy was lost."}, {"w": "cry", "m": "泣く", "s": "He stood near the gate and cried."}, {"w": "beside", "m": "〜のそばに", "s": "Momo sat beside him."}, {"w": "safe", "m": "安全な・無事な", "s": "He was safe now."}, {"w": "everyone", "m": "みんな", "s": "Everyone smiles at her."}, {"w": "job", "m": "仕事", "s": "It is her job."}, {"w": "wake up", "m": "目が覚める・起きる", "s": "I always wake up at five."}, {"w": "vegetable", "m": "野菜", "s": "I grow vegetables in my garden."}, {"w": "tomato", "m": "トマト", "s": "The tomatoes are red and round."}, {"w": "cucumber", "m": "キュウリ", "s": "I pick three cucumbers."}, {"w": "neighbor", "m": "隣人・近所の人", "s": "My neighbor, Mrs. Kimura, comes at six."}, {"w": "share", "m": "分け合う・共有する", "s": "We share the morning sun."}, {"w": "fresh", "m": "新鮮な", "s": "Fresh vegetables are good for breakfast."}, {"w": "soil", "m": "土", "s": "I touch the soil with my hands."}, {"w": "seed", "m": "種", "s": "Small seeds become tall plants."}, {"w": "healthy", "m": "健康な", "s": "Garden work keeps me healthy."}], "2": [{"w": "sure", "m": "確信している", "s": "But Kenji was sure."}, {"w": "silent", "m": "静かな・音のない", "s": "At twelve, the town was silent."}, {"w": "rust", "m": "さび", "s": "The gate was old and red with rust."}, {"w": "sign", "m": "看板・標識", "s": "A sign said: NO ENTRY."}, {"w": "lock", "m": "錠・鍵", "s": "On the door, there was a new lock."}, {"w": "path", "m": "小道", "s": "An old woman stood on the path."}, {"w": "carry", "m": "運ぶ・持っていく", "s": "She carried a heavy bag."}, {"w": "heavy", "m": "重い", "s": "She carried a heavy bag."}, {"w": "hill", "m": "丘", "s": "Kenji walked up the hill to the lighthouse."}, {"w": "flat", "m": "平らな", "s": "The grass was flat in a small line."}, {"w": "truth", "m": "真実・本当のこと", "s": "Tell me the truth."}, {"w": "keeper", "m": "管理人・番人", "s": "Who was the keeper of the lighthouse?"}, {"w": "storm", "m": "嵐", "s": "In 1974, there was a big storm."}, {"w": "wave", "m": "波", "s": "The waves were like mountains."}, {"w": "safely", "m": "無事に・安全に", "s": "The boat came back safely."}, {"w": "promise", "m": "約束する・約束", "s": "The captain promised something."}, {"w": "captain", "m": "船長", "s": "The captain said, \"Your light saved our lives.\""}, {"w": "harbor", "m": "港", "s": "A tall ship stood in the harbor."}, {"w": "notebook", "m": "ノート", "s": "Kenji wrote in his notebook."}, {"w": "alone", "m": "一人で・孤独に", "s": "She lives alone in the old keeper's house."}, {"w": "umbrella", "m": "傘", "s": "His umbrella was broken."}, {"w": "wet", "m": "ぬれた", "s": "His shoes and bag were wet."}, {"w": "platform", "m": "（駅の）ホーム", "s": "A student stood on the platform."}, {"w": "empty", "m": "空の・人のいない", "s": "The train was almost empty."}, {"w": "seat", "m": "席", "s": "Yamada sat near the door."}, {"w": "offer", "m": "申し出る・差し出す", "s": "Yamada offered his umbrella."}, {"w": "grateful", "m": "感謝している", "s": "\"I am very grateful,\" he said."}, {"w": "kind", "m": "親切な", "s": "Small kindness travels far."}, {"w": "far", "m": "遠くまで", "s": "Small kindness travels far."}, {"w": "huge", "m": "巨大な", "s": "A star is a huge ball of gas."}, {"w": "gas", "m": "気体・ガス", "s": "A star is a huge ball of gas."}, {"w": "burn", "m": "燃える", "s": "The gas burns and makes light."}, {"w": "heat", "m": "熱", "s": "It also makes heat."}, {"w": "travel", "m": "進む・旅する", "s": "The light travels a long distance."}, {"w": "nearest", "m": "最も近い", "s": "The sun is the nearest star."}, {"w": "tiny", "m": "とても小さい", "s": "Other stars look tiny."}, {"w": "however", "m": "しかしながら", "s": "However, many stars are bigger than the sun."}, {"w": "appointment", "m": "会う約束・アポイント", "s": "He had an appointment tonight."}, {"w": "doorway", "m": "入口・戸口", "s": "In the doorway of a dark shop, a man was waiting."}, {"w": "beat", "m": "（警官の）受け持ち区域・見回り", "s": "The policeman on his beat was walking slowly along the street."}, {"w": "match", "m": "マッチ", "s": "The man lit a match and put a cigar in his mouth."}, {"w": "cigar", "m": "葉巻", "s": "The man lit a match and put a cigar in his mouth."}, {"w": "west", "m": "西部・西", "s": "I went west to make my money."}, {"w": "sharp", "m": "鋭い・はっきりした", "s": "His eyes were sharp and bright."}, {"w": "wanted", "m": "指名手配されている", "s": "I saw a wanted man's face."}, {"w": "arrest", "m": "逮捕する", "s": "I cannot arrest my old friend myself."}, {"w": "note", "m": "短い手紙・メモ", "s": "It is a note from Jimmy."}, {"w": "statue", "m": "像", "s": "High above the city stood the statue of the Happy Prince."}, {"w": "swallow", "m": "ツバメ", "s": "A little swallow stopped under the statue."}, {"w": "ruby", "m": "ルビー", "s": "A great red ruby was in his sword."}, {"w": "sapphire", "m": "サファイア", "s": "His eyes were two bright sapphires."}, {"w": "seamstress", "m": "お針子・縫う仕事の女性", "s": "A poor seamstress is working there."}, {"w": "matchgirl", "m": "マッチ売りの少女", "s": "He took the other sapphire to a little matchgirl in the street."}, {"w": "angel", "m": "天使", "s": "God said to one of his angels, \"Bring me the two most precious things in the city.\""}, {"w": "precious", "m": "尊い・貴重な", "s": "God said to one of his angels, \"Bring me the two most precious things in the city.\""}, {"w": "giant", "m": "大男・巨人", "s": "The garden belonged to a great giant."}, {"w": "garden", "m": "庭", "s": "Every afternoon, the children came home from school and played in a beautiful garden."}, {"w": "wall", "m": "壁・塀", "s": "He built a very high wall around the garden."}, {"w": "spring", "m": "春", "s": "But spring did not come to the giant's garden."}, {"w": "snow", "m": "雪", "s": "Only the snow, the frost, the north wind, and the hail stayed in the garden."}, {"w": "hole", "m": "穴・すき間", "s": "The children came in through a small hole in the wall."}, {"w": "axe", "m": "斧（おの）", "s": "The giant took his big axe and broke down the wall."}, {"w": "afraid", "m": "怖がって・恐れて", "s": "The children were afraid, and they all ran away."}, {"w": "paradise", "m": "楽園・天国", "s": "My garden is Paradise."}, {"w": "matches", "m": "マッチ", "s": "Nobody bought any matches from her all day."}, {"w": "slippers", "m": "スリッパ・室内履き", "s": "In the morning, she had worn her mother's big slippers."}, {"w": "penny", "m": "ペニー（小銭）", "s": "Nobody gave her a single penny."}, {"w": "stove", "m": "ストーブ・かまど", "s": "In the light of the flame, she saw a big iron stove."}, {"w": "candles", "m": "ろうそく", "s": "Hundreds of little candles shone on its green branches."}, {"w": "soul", "m": "魂", "s": "\"When a star falls, a soul goes up to God.\""}, {"w": "grandmother", "m": "祖母", "s": "And there, in the bright light, stood her grandmother."}, {"w": "reward", "m": "報酬・ほうび", "s": "The king promised a great reward for the right answers."}, {"w": "hermit", "m": "隠遁者・世捨て人", "s": "People said a famous hermit in the forest knew many things."}, {"w": "spade", "m": "シャベル・スコップ", "s": "Give me the spade, and rest a little."}, {"w": "dig", "m": "掘る", "s": "If you did not help me dig, that man would kill you on your way home."}, {"w": "wound", "m": "傷", "s": "The king washed the wound and tied it with his handkerchief."}, {"w": "beard", "m": "あごひげ", "s": "He was a big man with a beard, and he pressed his hands to his stomach."}, {"w": "peace", "m": "平和・仲直り", "s": "The king was glad to make peace with his enemy."}, {"w": "enemy", "m": "敵", "s": "The king was glad to make peace with his enemy."}, {"w": "emperor", "m": "皇帝・王様", "s": "Long ago, in a great city, there lived an emperor."}, {"w": "cloth", "m": "布", "s": "But there was no cloth, and there was no thread."}, {"w": "money", "m": "お金", "s": "He spent all his money on the finest clothes."}, {"w": "loom", "m": "織り機", "s": "They put up a great loom in a big room."}, {"w": "minister", "m": "大臣", "s": "After many days, the emperor sent his oldest minister to see the cloth."}, {"w": "parade", "m": "行列・パレード", "s": "On the day of the great parade, the emperor took off all his clothes."}, {"w": "child", "m": "子ども", "s": "But then a small child cried, 'But he has nothing on!'"}, {"w": "ashamed", "m": "恥ずかしい", "s": "The emperor felt cold, and he felt very ashamed."}, {"w": "invisible", "m": "目に見えない", "s": "The two weavers made new clothes for the emperor from the invisible cloth."}, {"w": "woodcutter", "m": "木こり", "s": "Long ago, a poor woodcutter lived by a great forest with his two children."}, {"w": "stepmother", "m": "継母（ままはは）", "s": "Their mother was dead, and their stepmother did not love them."}, {"w": "pocket", "m": "ポケット", "s": "They filled their pockets and ran through the forest."}, {"w": "bird", "m": "鳥", "s": "On the third day, a white bird sang above them, and the children followed it."}, {"w": "roof", "m": "屋根", "s": "The hungry children ran to the house and began to eat the sweet roof."}, {"w": "witch", "m": "魔女", "s": "But the kind old woman was really a wicked witch."}, {"w": "finger", "m": "指", "s": "The witch's eyes were bad, so she felt Hansel's finger every morning."}, {"w": "bone", "m": "骨", "s": "Clever Hansel held out a thin little bone instead of his finger."}, {"w": "oven", "m": "オーブン・かまど", "s": "The next morning, the witch made a great fire in her big oven."}, {"w": "duckling", "m": "子ガモ（アヒルの子）", "s": "Out came a very big, grey duckling."}, {"w": "ugly", "m": "みにくい", "s": "But the other ducklings cried, 'You are too big and ugly! Go away!'"}, {"w": "lake", "m": "湖", "s": "He swam on the lake from morning to night, and he grew a little bigger."}, {"w": "hen", "m": "めんどり", "s": "An old woman lived there with a cat and a hen."}, {"w": "winter", "m": "冬", "s": "It was a long, hard winter, but the duckling lived through it."}, {"w": "ice", "m": "氷", "s": "One morning, the duckling was frozen fast in the ice and could not move."}, {"w": "farmer", "m": "農夫・お百姓さん", "s": "A kind farmer found him and broke the ice."}, {"w": "swan", "m": "白鳥・ハクチョウ", "s": "He was a white swan, just like them!"}, {"w": "question", "m": "質問", "s": "One morning, he had a new question."}, {"w": "crocodile", "m": "ワニ", "s": "\"What does the crocodile eat for dinner?\" he asked."}, {"w": "pull", "m": "引っぱる", "s": "The crocodile began to pull him into the water."}, {"w": "nose", "m": "鼻", "s": "The child was free, but his nose was very, very long."}, {"w": "trunk", "m": "（ゾウの）長い鼻", "s": "His nose was now a trunk."}, {"w": "fly", "m": "ハエ", "s": "Then a fly came and sat on his shoulder."}, {"w": "grass", "m": "草", "s": "With his nose, he could pick up grass to eat."}, {"w": "thumb", "m": "親指", "s": "She was no bigger than the woman's thumb."}, {"w": "shell", "m": "殻・貝殻", "s": "Thumbelina slept in a walnut shell with soft flower leaves for a bed."}, {"w": "toad", "m": "ヒキガエル", "s": "One night, an old toad jumped in through the open window."}, {"w": "stream", "m": "小川", "s": "The toad took the shell and carried Thumbelina away to a dark stream."}, {"w": "butterfly", "m": "蝶", "s": "A white butterfly pulled the leaf slowly down the stream."}, {"w": "beetle", "m": "甲虫", "s": "A big beetle saw her on the leaf and carried her up into a tree."}, {"w": "shoemaker", "m": "靴屋・靴職人", "s": "There was once a kind shoemaker who became very poor."}, {"w": "leather", "m": "革", "s": "With the money, he bought leather for four pairs, and the same thing happened again."}, {"w": "sew", "m": "縫う", "s": "We do not need to sew anymore!"}, {"w": "customer", "m": "客", "s": "Soon, a customer came into the shop."}, {"w": "price", "m": "値段", "s": "He liked the shoes so much that he paid more than the usual price."}, {"w": "candle", "m": "ろうそく", "s": "They lit a candle and hid behind the curtains."}, {"w": "gift", "m": "贈り物", "s": "They worked all day to make a special gift for the little men."}, {"w": "lucky", "m": "幸運な", "s": "But he stayed lucky and rich for the rest of his life, because he was kind and honest."}, {"w": "rat", "m": "ネズミ", "s": "Not one rat was left in the town."}, {"w": "pipe", "m": "笛・パイプ", "s": "His coat had many colors, red and yellow, and he carried a thin pipe."}, {"w": "gold", "m": "金", "s": "A promise is more important than gold."}, {"w": "follow", "m": "後について行く", "s": "All the children ran out of their houses to follow him."}, {"w": "mountain", "m": "山", "s": "The mountain opened like a great door, and the children went inside."}], "3": [{"w": "article", "m": "（新聞などの）記事", "s": "He found a small article."}, {"w": "hurt", "m": "痛む", "s": "His eyes hurt, but he did not stop."}, {"w": "wooden", "m": "木製の", "s": "She gave him a small wooden box."}, {"w": "compass", "m": "羅針盤・コンパス", "s": "There were a compass, some photos, and an old letter."}, {"w": "shake", "m": "振る・（手を）握る", "s": "I will come and shake your hand."}, {"w": "sick", "m": "病気の", "s": "Grandfather became sick that winter."}, {"w": "became", "m": "（becomeの過去形）〜になった", "s": "Grandfather became sick that winter."}, {"w": "rest", "m": "残り・その他", "s": "His sister told him the rest."}, {"w": "desk", "m": "受付・机", "s": "An old woman at the desk smiled at him."}, {"w": "inside", "m": "内側に・中に", "s": "Inside, there were a compass and photos."}, {"w": "hesitate", "m": "ためらう", "s": "She hesitated, then opened the door."}, {"w": "climb", "m": "登る", "s": "Every October 12, I climb the hill."}, {"w": "dangerous", "m": "危険な", "s": "The hill path is dangerous in a storm."}, {"w": "anniversary", "m": "記念日", "s": "Tomorrow is the fiftieth anniversary."}, {"w": "distance", "m": "距離・遠く", "s": "They watched the sea in the distance."}, {"w": "below", "m": "下に・下方に", "s": "Below them, the town lights were small."}, {"w": "whole", "m": "全体の・全部の", "s": "The whole town saw the light."}, {"w": "tear", "m": "涙", "s": "Tears came to her eyes."}, {"w": "place", "m": "場所・（in his place で）代わり", "s": "I lit the lamp in his place."}, {"w": "forecast", "m": "予報", "s": "The forecast said a storm was coming."}, {"w": "trail", "m": "登山道", "s": "The trail was quiet in the morning."}, {"w": "backpack", "m": "リュックサック", "s": "He put food and water in his backpack."}, {"w": "cloud", "m": "雲", "s": "Dark clouds were coming from the west."}, {"w": "hut", "m": "山小屋", "s": "There was a mountain hut near the top."}, {"w": "valley", "m": "谷", "s": "He could see the whole valley."}, {"w": "sunrise", "m": "日の出", "s": "They watched the sunrise together."}, {"w": "golden", "m": "金色の", "s": "The sea of clouds was golden."}, {"w": "journey", "m": "旅", "s": "It was a short journey, but a deep one."}, {"w": "counted", "m": "数えた（count の過去形）", "s": "Della counted the money three times, but it was still the same."}, {"w": "cent", "m": "セント（米国の硬貨の単位）", "s": "One dollar and eighty-seven cents."}, {"w": "treasure", "m": "宝物・大切なもの", "s": "Della and Jim had two treasures."}, {"w": "proudly", "m": "誇らしげに", "s": "Jim took out his watch proudly on Sunday."}, {"w": "comb", "m": "くし", "s": "Inside was a set of beautiful combs, the combs she had wanted for a long time."}, {"w": "chain", "m": "（時計の）鎖・チェーン", "s": "It was a platinum chain for a watch, strong and simple."}, {"w": "sell", "m": "売る", "s": "She decided to sell her hair."}, {"w": "foolish", "m": "愚かな", "s": "They looked foolish, but they were wise."}, {"w": "wise", "m": "賢い", "s": "They looked foolish, but they were wise."}, {"w": "present", "m": "贈り物", "s": "She had to buy a present for Jim, her husband."}, {"w": "pneumonia", "m": "肺炎", "s": "In November, many people became sick with pneumonia."}, {"w": "artist", "m": "芸術家・画家", "s": "Two young artists, Sue and Johnsy, lived in a small room at the top of a house."}, {"w": "leaf", "m": "葉（複数形は leaves）", "s": "She was counting the leaves on an old ivy plant outside."}, {"w": "counting", "m": "数えている（count の -ing 形）", "s": "She was counting the leaves on an old ivy plant outside."}, {"w": "weak", "m": "弱い・弱った", "s": "Her body was weak, and her heart was weaker."}, {"w": "masterpiece", "m": "傑作・最高の作品", "s": "For twenty-five years, he had talked about his masterpiece."}, {"w": "paint", "m": "描く・ペンキを塗る", "s": "One day, I will paint my masterpiece."}, {"w": "ladder", "m": "はしご", "s": "On the ground, there were a ladder and a lantern, still lighted."}, {"w": "lantern", "m": "ランタン・ともし火", "s": "On the ground, there were a ladder and a lantern, still lighted."}, {"w": "recover", "m": "回復する", "s": "Now she can recover."}, {"w": "clerk", "m": "事務員・書記", "s": "So she married a small clerk in the Ministry of Education."}, {"w": "palace", "m": "宮殿", "s": "She dreamed of a great palace, fine dinners, jewels, and soft dresses."}, {"w": "invitation", "m": "招待（状）", "s": "An invitation to the great ball at the Ministry."}, {"w": "dress", "m": "ドレス・服", "s": "Take the money and buy a beautiful dress."}, {"w": "diamond", "m": "ダイヤモンド", "s": "At last, Mathilde found a beautiful diamond necklace."}, {"w": "servant", "m": "使用人・お手伝い", "s": "They sent away their servant and moved to a small room under a roof."}, {"w": "debt", "m": "借金", "s": "Year after year, they paid back the terrible debt."}, {"w": "proud", "m": "誇らしい", "s": "Mathilde spoke with a proud smile."}, {"w": "false", "m": "偽の・本物でない", "s": "My necklace was false."}, {"w": "fence", "m": "塀・柵", "s": "The fence was thirty yards long and nine feet high."}, {"w": "bucket", "m": "バケツ", "s": "Jim, a boy who helped in the house, came with a bucket for water."}, {"w": "brush", "m": "刷毛・ブラシ", "s": "Tom had a bucket of white paint and a long-handled brush."}, {"w": "particular", "m": "（特に）うるさい・こだわる", "s": "\"No, Ben. Aunt Polly is very particular about this fence.\""}, {"w": "shade", "m": "日陰・木陰", "s": "He took the apple and sat down in the cool shade."}, {"w": "kite", "m": "凧（たこ）", "s": "Billy gave Tom a kite for a turn with the brush."}, {"w": "marbles", "m": "ビー玉", "s": "Johnny gave him twelve marbles."}, {"w": "treasures", "m": "宝物", "s": "He had twelve marbles, a piece of blue glass, a tin soldier, a kite, and many other treasures."}, {"w": "prize", "m": "賞品・ご褒美", "s": "It was a prize, and prizes are never easy to get."}, {"w": "homeless", "m": "家がない・ホームレスの", "s": "Soapy was a homeless man in New York."}, {"w": "arrested", "m": "逮捕された", "s": "He wanted to be arrested by the police."}, {"w": "prison", "m": "刑務所", "s": "Then the court would send him to the prison on the island."}, {"w": "island", "m": "島", "s": "Then the court would send him to the prison on the island."}, {"w": "waiter", "m": "ウェイター・給仕", "s": "The waiter turned him away before he could sit down."}, {"w": "window", "m": "窓", "s": "Next, Soapy tried to break a shop window."}, {"w": "stone", "m": "石", "s": "He picked up a big stone and threw it at the glass."}, {"w": "anthem", "m": "聖歌・アンセム", "s": "Soft music came through a window — an anthem, a holy song."}, {"w": "judge", "m": "裁判官", "s": "\"Three months on the island,\" the judge said."}, {"w": "nerves", "m": "神経", "s": "His nerves were bad, and his doctor told him to rest."}, {"w": "doctor", "m": "医者", "s": "His nerves were bad, and his doctor told him to rest."}, {"w": "letters", "m": "（紹介の）手紙", "s": "She gave him letters to the people she knew there."}, {"w": "niece", "m": "姪", "s": "Her niece Vera, a girl of fifteen, sat with him."}, {"w": "tragedy", "m": "悲劇・悲しい出来事", "s": "\"Her great tragedy happened three years ago today.\""}, {"w": "marsh", "m": "沼地・湿地", "s": "\"They went shooting in the marsh, with their little brown dog.\""}, {"w": "bodies", "m": "遺体・体", "s": "\"The wet ground took them, and their bodies were never found.\""}, {"w": "figures", "m": "人影・姿", "s": "Suddenly, in the soft evening light, he saw three figures on the grass."}, {"w": "king", "m": "王", "s": "Long ago, in a far country, there lived a partly wild king."}, {"w": "arena", "m": "闘技場・競技場", "s": "The king built a great arena with seats for thousands of people."}, {"w": "door", "m": "扉・ドア", "s": "Behind one door stood the most beautiful lady in the land."}, {"w": "tiger", "m": "虎", "s": "Behind the other door, a hungry tiger waited to kill him."}, {"w": "princess", "m": "王女・お姫様", "s": "The king's daughter, the princess, had her father's strong and wild heart."}, {"w": "choice", "m": "選択", "s": "The man's future depended on his choice."}, {"w": "secret", "m": "秘密", "s": "At last, she learned the secret of the two doors."}, {"w": "signal", "m": "合図", "s": "She made a quick signal toward the door on the right."}, {"w": "jealous", "m": "嫉妬（しっと）している", "s": "She was jealous when she thought of that lady."}, {"w": "accident", "m": "事故", "s": "A train accident killed him, their friend Richards said."}, {"w": "sweet", "m": "甘い・心地よい", "s": "Rain had just stopped, and the air smelled sweet and fresh."}, {"w": "bright", "m": "輝いている・明るい", "s": "Now her eyes were bright, and her heart beat fast."}, {"w": "freedom", "m": "自由", "s": "Behind the door, Louise was drinking in the sweet air of freedom."}, {"w": "keyhole", "m": "鍵穴", "s": "Josephine knelt outside the door, with her lips to the keyhole."}, {"w": "waist", "m": "腰", "s": "Her eyes shone like a winner's, and she held her sister around the waist."}, {"w": "mongoose", "m": "マングース", "s": "This is the story of Rikki-tikki-tavi, a young mongoose."}, {"w": "flood", "m": "洪水", "s": "One day, a great flood carried him away from his family's home."}, {"w": "curious", "m": "好奇心の強い", "s": "Rikki was curious about everything."}, {"w": "cobra", "m": "コブラ", "s": "'Nag, the big cobra, ate one of my babies,' said Darzee."}, {"w": "anger", "m": "怒り", "s": "Rikki's eyes became red with anger."}, {"w": "bite", "m": "かむ・かみつく", "s": "Nag said, 'First, we will bite the big man and the child.'"}, {"w": "egg", "m": "卵", "s": "One by one, he broke them all, until only one egg was left."}, {"w": "kidnap", "m": "誘拐する", "s": "We made a plan to kidnap the son of a rich banker in the small town of Summit."}, {"w": "ransom", "m": "身代金", "s": "We decided to demand a ransom of two thousand dollars."}, {"w": "cave", "m": "洞窟", "s": "He said, 'I am Red Chief, the great Indian chief, and this cave is my camp!'"}, {"w": "chief", "m": "長・チーフ", "s": "He wanted to cut off Bill's hair, like a real Indian chief."}, {"w": "wild", "m": "乱暴な・手に負えない", "s": "Mr. Dorset wrote back, 'Your boy is too wild for this town.'"}, {"w": "demand", "m": "要求する", "s": "We decided to demand a ransom of two thousand dollars."}, {"w": "suffer", "m": "苦しむ", "s": "From that day, Bill began to suffer in body and mind."}, {"w": "frighten", "m": "おびえさせる・怖がらせる", "s": "We tried to frighten him with stories of the police, but nothing worked."}, {"w": "crack", "m": "（金庫などを）こじ開ける", "s": "Jimmy Valentine was a famous burglar who could crack any safe in a few minutes."}, {"w": "suitcase", "m": "スーツケース・かばん", "s": "He carried his fine tools in a heavy suitcase, and no lock in the country was safe from him."}, {"w": "honest", "m": "正直な・真面目な", "s": "He changed his name to Ralph Spencer in order to start a new and honest life."}, {"w": "vault", "m": "（銀行の）大金庫室", "s": "Two weeks before the wedding, Annabel's father showed his family the bank's new vault."}, {"w": "detective", "m": "探偵・刑事", "s": "A clever detective named Ben Price knew the work of Jimmy Valentine very well."}, {"w": "rescue", "m": "救い出す・助ける", "s": "Only Jimmy could rescue the little girl now."}, {"w": "pretend", "m": "〜のふりをする", "s": "But Ben Price chose to pretend that he had never seen this man before."}, {"w": "land", "m": "土地", "s": "They fought about a narrow piece of land between their houses."}, {"w": "gun", "m": "銃", "s": "Georg also had a gun in his hands."}, {"w": "ground", "m": "地面", "s": "The wind was strong, and snow covered the ground."}, {"w": "flask", "m": "小瓶（携帯用の酒瓶）", "s": "After a long time, Ulrich took a small flask of wine from his pocket."}, {"w": "wine", "m": "ワイン", "s": "'Drink this wine, Georg,' he said."}, {"w": "shout", "m": "叫ぶ", "s": "'Let us shout together,' said Ulrich."}, {"w": "guest", "m": "客", "s": "'If we become friends,' said Georg slowly, 'I will hunt in your forest as your guest.'"}, {"w": "gate", "m": "門", "s": "Long ago, a baby girl was found near the gate of a rich man's house in Louisiana."}, {"w": "planter", "m": "農園主", "s": "One day, Armand Aubigny, a rich young planter, saw her and fell in love at once."}, {"w": "skin", "m": "肌", "s": "'Look at my skin, Armand,' she said."}, {"w": "tears", "m": "涙", "s": "That evening, Désirée spoke to Armand with tears in her eyes."}, {"w": "bayou", "m": "バイユー（沼地の入江）", "s": "She walked into the wild bayou, and nobody saw her or the baby again."}, {"w": "drawer", "m": "引き出し", "s": "Last, he opened a drawer and took out a letter written by his own mother."}, {"w": "slave", "m": "奴隷", "s": "His mother herself was a Black woman who had been a slave."}, {"w": "peasant", "m": "農民", "s": "Pahom was a poor peasant in Russia."}, {"w": "devil", "m": "悪魔", "s": "I would not even be afraid of the Devil."}, {"w": "quarrel", "m": "けんかする・口論する", "s": "Pahom began to quarrel with his neighbors again and again."}, {"w": "greedy", "m": "欲張りな", "s": "'I was too greedy,' he cried."}, {"w": "sunset", "m": "日没・日の入り", "s": "'But you must come back to this hill before sunset.'"}, {"w": "student", "m": "学生", "s": "A young Student was walking in his garden, with tears in his eyes."}, {"w": "rose", "m": "バラ", "s": "'But there is not one red rose in my whole garden.'"}, {"w": "dance", "m": "踊る", "s": "'She will dance with me if I bring her a red rose.'"}, {"w": "thorn", "m": "とげ", "s": "She pressed her heart against the thorn, and the thorn went deeper and deeper."}, {"w": "sing", "m": "歌う", "s": "'You must sing for me all night long, with a sharp thorn against your heart.'"}, {"w": "dawn", "m": "夜明け", "s": "At dawn, the Nightingale was dead in the grass, and a perfect red rose opened on the tree."}, {"w": "wheel", "m": "車輪", "s": "A cart came by, and its wheel ran over the rose."}, {"w": "train", "m": "訓練する・教え込む", "s": "He began to train the frog to jump."}, {"w": "frog", "m": "カエル", "s": "One day, Smiley caught a frog in a pond."}, {"w": "jump", "m": "跳ぶ", "s": "He taught the frog to jump high and far."}, {"w": "pond", "m": "池", "s": "\"Hold this, please. I will catch a frog for you at the pond.\""}, {"w": "fill", "m": "いっぱいにする・詰める", "s": "He used the shot to fill the frog's body."}, {"w": "catch", "m": "捕まえる・つかむ", "s": "\"Hold this, please. I will catch a frog for you at the pond.\""}, {"w": "coat", "m": "コート・外套", "s": "His house was small, and his family had only one warm coat."}, {"w": "village", "m": "村", "s": "He took his small savings and went to the village."}, {"w": "naked", "m": "裸の", "s": "It was a young man, sitting naked against the church wall."}, {"w": "master", "m": "主人・ご主人", "s": "'My master is dead,' he said."}, {"w": "heaven", "m": "天国・天", "s": "Then great wings opened on Michael's back, and he rose up to heaven, singing."}, {"w": "theater", "m": "劇場", "s": "One winter evening, he went to the theater to watch a famous play."}, {"w": "sneeze", "m": "くしゃみ", "s": "Suddenly, in a quiet part of the play, he felt a sneeze coming in his nose."}, {"w": "general", "m": "将軍・高官", "s": "In the row in front of him sat an old general."}, {"w": "bald", "m": "はげた", "s": "The general's bald head was wet, and it was wet from his sneeze."}, {"w": "whisper", "m": "ささやき（声）", "s": "He leaned forward and spoke in a whisper."}, {"w": "apologize", "m": "謝る・謝罪する", "s": "I only wanted to apologize."}, {"w": "forgive", "m": "許す", "s": "Could you forgive me?"}, {"w": "purpose", "m": "故意・わざと", "s": "I did not do it on purpose,"}, {"w": "rude", "m": "失礼な", "s": "He may think you are rude, and that is a serious thing."}, {"w": "market", "m": "市場", "s": "One morning, he walked to the market in the town of Goderville."}, {"w": "string", "m": "紐・ひも", "s": "In front of the town hall, he saw a small piece of string on the ground."}, {"w": "wallet", "m": "財布", "s": "A black leather wallet was lost this morning, on the road to the market!"}, {"w": "believe", "m": "信じる", "s": "Why won't you believe me?"}, {"w": "carriage", "m": "（列車の）車両・客車", "s": "A man sat in one corner of the carriage."}, {"w": "corner", "m": "隅・角", "s": "In the other corner, an aunt sat with three children."}, {"w": "restless", "m": "落ち着かない", "s": "The children were hot and restless."}, {"w": "field", "m": "野原・畑", "s": "One day, a mad bull ran after her in a field."}, {"w": "medal", "m": "メダル・勲章", "s": "One medal was for goodness, one was for good behaviour, and one was for never being late."}, {"w": "bush", "m": "茂み・低木", "s": "Bertha saw the wolf and ran to a thick bush."}, {"w": "breath", "m": "息・呼吸", "s": "She hid in the bush and held her breath."}, {"w": "wolf", "m": "オオカミ", "s": "Suddenly, a great hungry wolf came into the park."}, {"w": "improper", "m": "不適切な・ふさわしくない", "s": "\"That is a most improper story for children!\" she cried."}, {"w": "surface", "m": "水面・表面", "s": "She put flowers in her hair and swam up to the surface."}, {"w": "sink", "m": "沈む", "s": "The prince fell into the dark water and began to sink."}, {"w": "temple", "m": "神殿・寺院", "s": "In the morning, she left him on the sand near a white temple."}, {"w": "voice", "m": "声", "s": "\"You must give me your sweet voice in return.\""}, {"w": "foam", "m": "泡", "s": "When the sun rose, her body became white sea foam."}], "4": [{"w": "spread", "m": "広がる", "s": "The news spread quickly through the town."}, {"w": "mayor", "m": "町長・市長", "s": "The mayor visited Yoko's house."}, {"w": "repair", "m": "修理する", "s": "The town decided to repair the lighthouse."}, {"w": "museum", "m": "博物館", "s": "They made it a small museum."}, {"w": "display", "m": "展示する", "s": "The photo was displayed near the entrance."}, {"w": "festival", "m": "祭り", "s": "The town planned a small festival."}, {"w": "officially", "m": "公式に", "s": "The lamp is now lit officially every year."}, {"w": "event", "m": "行事・イベント", "s": "It became a town event."}, {"w": "entrance", "m": "入口", "s": "The photo was displayed near the entrance."}, {"w": "glass", "m": "ガラス（製の）", "s": "The letter was put in a glass case."}, {"w": "sailor", "m": "船員・船乗り", "s": "My grandfather was a sailor."}, {"w": "exactly", "m": "正確に・ちょうど", "s": "It stopped at exactly 6:12."}, {"w": "engraved", "m": "刻まれた", "s": "Words were engraved on the back."}, {"w": "case", "m": "ケース・側（そく）", "s": "He opened the back of the case."}, {"w": "patient", "m": "辛抱強い", "s": "Repairing clocks needs patient hands."}, {"w": "tick", "m": "（時計の）チクタクという音", "s": "The shop was full of the sound of ticks."}, {"w": "memory", "m": "思い出・記憶", "s": "Every clock holds a memory."}, {"w": "carefully", "m": "注意深く・丁寧に", "s": "He worked slowly and carefully."}, {"w": "alive", "m": "生きている", "s": "The clock came alive again."}, {"w": "announce", "m": "発表する", "s": "The town announced the plan in March."}, {"w": "resident", "m": "住民", "s": "Many residents welcomed the change."}, {"w": "extend", "m": "延長する", "s": "The library extended its hours."}, {"w": "borrow", "m": "借りる", "s": "People can borrow books until 9 p.m."}, {"w": "volunteer", "m": "ボランティア", "s": "Volunteers help at the front desk."}, {"w": "according to", "m": "〜によると", "s": "According to the mayor, reading is growing."}, {"w": "popular", "m": "人気のある", "s": "The night hours are popular with students."}, {"w": "plan", "m": "計画する", "s": "The town plans to add more seats."}, {"w": "quietly", "m": "静かに", "s": "People read quietly at long tables."}, {"w": "league", "m": "組合・同盟", "s": "\"It is called the Red-Headed League,\" he said."}, {"w": "pawnbroker", "m": "質屋の主人", "s": "Mr. Wilson was a pawnbroker with bright red hair."}, {"w": "assistant", "m": "助手・店員", "s": "His assistant, Vincent Spaulding, worked for only half the usual pay."}, {"w": "advertisement", "m": "広告", "s": "My assistant showed me a strange advertisement."}, {"w": "encyclopedia", "m": "百科事典", "s": "He copied pages from a great encyclopedia, in clear handwriting."}, {"w": "dissolved", "m": "解散した", "s": "\"The Red-Headed League is dissolved, October 9.\""}, {"w": "knees", "m": "（ズボンの）ひざ", "s": "The knees of his trousers were dirty, worn, and shiny."}, {"w": "tunnel", "m": "トンネル・地下道", "s": "They are digging a tunnel from your shop to the bank."}, {"w": "cellar", "m": "地下室", "s": "At ten o'clock, Holmes, Watson, a police officer, and the bank director waited in the dark cellar of the bank."}, {"w": "capture", "m": "捕らえる・捕獲する", "s": "Holmes planned to capture the famous thief John Clay that night."}, {"w": "humbug", "m": "ばかげた話・でたらめ", "s": "\"Bah! Humbug!\" he often said."}, {"w": "nephew", "m": "甥（おい）", "s": "On Christmas Eve, Scrooge's nephew Fred came to the office with a smile."}, {"w": "refused", "m": "断った（refuse の過去形）", "s": "Fred invited his uncle to Christmas dinner, but Scrooge refused."}, {"w": "ghost", "m": "幽霊・亡霊", "s": "The door opened, and the ghost of Jacob Marley stood before him."}, {"w": "partner", "m": "共同経営者・相棒", "s": "Marley had been Scrooge's partner, and he had died seven years before."}, {"w": "lonely", "m": "孤独な・寂しい", "s": "He saw himself as a lonely boy, reading alone at school during the holidays."}, {"w": "spirit", "m": "霊・精霊", "s": "\"If these shadows do not change, the child will die,\" the spirit said."}, {"w": "grave", "m": "墓", "s": "Scrooge read his own name on the grave: EBENEZER SCROOGE."}, {"w": "goose", "m": "ガチョウ", "s": "Beside it lay a fat white goose, with a card tied to its leg: For Mrs. Henry Baker."}, {"w": "commissionaire", "m": "門番・案内係", "s": "Peterson, the commissionaire, had found them in the street early that morning."}, {"w": "carbuncle", "m": "（赤・青の）宝石（カーバンクル）", "s": "\"Watson, this is the blue carbuncle of the Countess of Morcar.\""}, {"w": "stolen", "m": "盗まれた（steal の過去分詞）", "s": "It was stolen from her room at the Cosmopolitan Hotel five days ago."}, {"w": "plumber", "m": "配管工", "s": "\"A plumber called John Horner has been arrested for the theft, but the stone was never found.\""}, {"w": "delighted", "m": "大喜びした（delight の過去形）", "s": "Baker was delighted, and he cared nothing for the insides of the old goose."}, {"w": "landlord", "m": "（宿・酒場の）主人", "s": "\"The landlord bought his geese from a man called Breckinridge, at Covent Garden.\""}, {"w": "dealer", "m": "商人・販売業者", "s": "At Covent Garden, Breckinridge was a big, red-faced dealer in birds."}, {"w": "throat", "m": "のど", "s": "\"I pushed the stone down the throat of her biggest goose,\" he said."}, {"w": "camp", "m": "キャンプ・野営地", "s": "He was going to the camp on Henderson Creek, where the boys were already waiting."}, {"w": "imagination", "m": "想像力", "s": "He had no imagination, and he did not think about his weak place in the world."}, {"w": "advice", "m": "忠告・助言", "s": "The man had laughed at the old man's advice."}, {"w": "twigs", "m": "小枝（twig の複数形）", "s": "He gathered dry twigs and grass under a great spruce tree."}, {"w": "spruce", "m": "トウヒ（常緑樹）", "s": "He gathered dry twigs and grass under a great spruce tree."}, {"w": "flame", "m": "炎", "s": "Soon a small flame was dancing among the twigs."}, {"w": "numb", "m": "感覚のない・かじかんだ", "s": "But his fingers were numb, and he could not feel the matches."}, {"w": "banker", "m": "銀行家", "s": "Fifteen years ago, the banker gave a party on a dark autumn evening."}, {"w": "lawyer", "m": "弁護士", "s": "A young lawyer of twenty-five shook his head."}, {"w": "execution", "m": "死刑の執行・処刑", "s": "Some said that execution was quick and therefore more kind."}, {"w": "bet", "m": "賭け", "s": "The two men made a bet that night."}, {"w": "cell", "m": "独房・小さな部屋", "s": "The lawyer would live alone for fifteen years in a small cell in the banker's garden."}, {"w": "piano", "m": "ピアノ", "s": "Through the window, the banker heard him playing the piano, hour after hour."}, {"w": "language", "m": "言語・言葉", "s": "That year, he learned a new language in six months."}, {"w": "wisdom", "m": "知恵", "s": "He wrote that money could not buy wisdom."}, {"w": "noon", "m": "正午", "s": "The fifteen years began at noon on November 14, 1885."}, {"w": "nervous", "m": "神経質な・そわそわした", "s": "I am very nervous, but I am not mad."}, {"w": "hearing", "m": "聴覚・聞く力", "s": "Most of all, my hearing is sharp."}, {"w": "pale", "m": "青白い・色の薄い", "s": "But he had one pale blue eye, like the eye of a bird."}, {"w": "blood", "m": "血", "s": "Every time I looked at that eye, my blood ran cold."}, {"w": "midnight", "m": "真夜中・夜中の12時", "s": "For seven nights, I had gone to his door at midnight."}, {"w": "lamp", "m": "ランプ・明かり", "s": "Then I put my head into the room and opened my lamp a little."}, {"w": "groan", "m": "うめき声", "s": "It was not a groan of pain; it was a groan of fear."}, {"w": "knock", "m": "（ドアを）たたく音・ノック", "s": "At four o'clock in the morning, there was a knock at the door."}, {"w": "magic", "m": "魔法の・魔法", "s": "\"This paw is magic,\" Morris said."}, {"w": "spell", "m": "呪文・まじない", "s": "\"A holy man in India put a spell on it.\""}, {"w": "fate", "m": "運命", "s": "\"He wanted to show that fate rules people's lives,\" Morris said."}, {"w": "trouble", "m": "災い・面倒", "s": "Morris told them the paw always brought trouble to the men who used it."}, {"w": "wish", "m": "願う・願い", "s": "\"I wish for two hundred pounds,\" Mr. White said clearly."}, {"w": "factory", "m": "工場", "s": "Herbert went off to his work at the factory, still laughing."}, {"w": "machine", "m": "機械", "s": "\"Your son Herbert was caught in a machine.\""}, {"w": "loss", "m": "損失・（人を）失うこと", "s": "The company gave the family two hundred pounds for their loss."}, {"w": "bridge", "m": "橋", "s": "A man stood on a railroad bridge in northern Alabama."}, {"w": "rope", "m": "ロープ・縄", "s": "A thick rope was around his neck."}, {"w": "soldier", "m": "兵士", "s": "One evening, a gray soldier stopped at his house and asked for water."}, {"w": "river", "m": "川", "s": "Only the river made a sound below the bridge."}, {"w": "sergeant", "m": "軍曹（ぐんそう）", "s": "The sergeant stood at one end of the bridge."}, {"w": "escape", "m": "逃げること・脱出", "s": "He began to plan his escape and swam away from the bridge."}, {"w": "bullet", "m": "弾丸・銃弾", "s": "A bullet passed close to his head."}, {"w": "driftwood", "m": "流木", "s": "A large piece of driftwood had collected under the bridge."}, {"w": "forest", "m": "森", "s": "He ran into a dark forest and did not stop."}, {"w": "neck", "m": "首", "s": "He felt a sharp pain in his neck."}, {"w": "stepfather", "m": "義理の父・継父", "s": "Her stepfather, Dr. Roylott, was a tall and terrible man."}, {"w": "fear", "m": "恐怖・不安", "s": "Her face was white, and her hands shook with fear."}, {"w": "whistle", "m": "口笛・笛の音", "s": "For three nights before she died, Julia heard a low whistle in the dark."}, {"w": "ventilator", "m": "換気口・通気孔", "s": "Above the bed was a small ventilator."}, {"w": "saucer", "m": "（コップの下の）受け皿", "s": "On the floor stood a small saucer of milk."}, {"w": "milk", "m": "牛乳・ミルク", "s": "On the floor stood a small saucer of milk."}, {"w": "snake", "m": "ヘビ", "s": "Something moved on the rope — a terrible snake, with yellow and brown spots on its back."}, {"w": "photograph", "m": "写真", "s": "Five times, the King's men tried to take the photograph."}, {"w": "marry", "m": "結婚する", "s": "Now the King planned to marry a princess of Scandinavia."}, {"w": "singer", "m": "歌手", "s": "Some years before, the King had loved Irene Adler, a famous singer."}, {"w": "disguise", "m": "変装", "s": "Holmes put on a disguise — the clothes of a poor old priest."}, {"w": "fire", "m": "火事・火", "s": "There was no real fire in the house, but Irene did not know that."}, {"w": "smoke", "m": "煙", "s": "Smoke filled the room in a moment."}, {"w": "letter", "m": "手紙", "s": "On the table lay a letter for Holmes."}, {"w": "portrait", "m": "肖像・肖像写真", "s": "Inside the hiding place, Holmes found a portrait of Irene herself, in a beautiful evening dress."}, {"w": "gentle", "m": "優しい・穏やかな", "s": "I was a gentle boy, and animals made me happy."}, {"w": "alcohol", "m": "アルコール・酒", "s": "I started to drink, and alcohol made me angry and cruel."}, {"w": "drunk", "m": "酔った", "s": "One night, I came home very drunk."}, {"w": "knife", "m": "ナイフ", "s": "He bit my hand, and in my anger I took a knife from my pocket."}, {"w": "barrel", "m": "樽（たる）", "s": "One night, in a small bar, I saw a large black cat on a barrel."}, {"w": "chest", "m": "胸", "s": "But this cat had a white mark on its chest."}, {"w": "gallows", "m": "絞首台", "s": "It looked more and more like a gallows, the place where men are hanged."}, {"w": "madness", "m": "狂気", "s": "I almost fell, and my anger became madness."}, {"w": "racehorse", "m": "競走馬", "s": "Silver Blaze was the most famous racehorse in England."}, {"w": "owner", "m": "持ち主・馬主", "s": "His owner, Colonel Ross, kept him at King's Pyland in Dartmoor."}, {"w": "stable", "m": "厩舎（きゅうしゃ）", "s": "The stable boy, Ned Hunter, stayed with the horses all night."}, {"w": "trainer", "m": "調教師", "s": "John Straker, a quiet and trusted man, was his trainer."}, {"w": "moor", "m": "荒野・荒れ地", "s": "In the morning, Silver Blaze was gone, and Straker was found dead on the moor."}, {"w": "stranger", "m": "見知らぬ人", "s": "While he was eating, a stranger came to the stable door."}, {"w": "opium", "m": "アヘン", "s": "Someone must have put opium in his food."}, {"w": "surgeon", "m": "外科医", "s": "It was the knife of a surgeon, made for very small and careful cuts."}, {"w": "lame", "m": "足が不自由な・足を引きずる", "s": "The farmer told him that three of his sheep had become lame that week."}, {"w": "dye", "m": "染料・染めること", "s": "The man hid the horse and colored its white marks with dye."}, {"w": "cutting", "m": "掘割（線路を通すために掘った溝）", "s": "He was a signalman, and his small room was in a deep, dark cutting beside a tunnel."}, {"w": "bell", "m": "ベル・警鈴", "s": "When the bell rang, he had to change the signals and let the train pass safely."}, {"w": "figure", "m": "人影・姿", "s": "The figure first appeared more than a year ago"}, {"w": "warn", "m": "警告する", "s": "It came to warn me, but I cannot understand its warning."}, {"w": "driver", "m": "運転士", "s": "Later, I heard the driver's story, and it troubled me for a long time."}, {"w": "veil", "m": "ベール（顔を隠す薄い布）", "s": "A black veil covered his face."}, {"w": "church", "m": "教会", "s": "One Sunday morning, the people of Milford came to church as usual."}, {"w": "sermon", "m": "説教", "s": "That day, Mr. Hooper's sermon was about secret sins."}, {"w": "sin", "m": "罪", "s": "Every face around me wears a black veil too — a secret sin, a secret sorrow."}, {"w": "strange", "m": "奇妙な", "s": "But that morning, something was very strange."}, {"w": "hide", "m": "隠す", "s": "He spoke about the sins that people hide from their families and even from themselves."}, {"w": "clever", "m": "賢い・利口な", "s": "In Paris, there lived a clever man named Auguste Dupin."}, {"w": "worried", "m": "心配した", "s": "The Prefect looked worried and tired."}, {"w": "furniture", "m": "家具", "s": "They pushed long needles into the soft parts of the furniture."}, {"w": "rack", "m": "（手紙などを入れる）ラック・棚", "s": "On the desk, there was a rack for cards and letters."}, {"w": "seal", "m": "封印・封の印", "s": "The writing on it was small, and the seal was black and broken."}, {"w": "torn", "m": "破れた", "s": "In the rack, he saw a letter that was dirty and torn."}, {"w": "glove", "m": "手袋", "s": "\"This letter has been turned inside out, like a glove,\" he thought."}, {"w": "copy", "m": "写し・コピー", "s": "He brought with him a copy of the letter, made to look the same."}, {"w": "gentleman", "m": "紳士", "s": "One morning, a gentleman came to see Sherlock Holmes."}, {"w": "wedding", "m": "結婚式", "s": "Before the wedding, Elsie had asked him one thing."}, {"w": "flag", "m": "旗", "s": "\"A small flag in a figure's hand shows the end of a word.\""}, {"w": "creature", "m": "生き物・被造物", "s": "'I am your creature,' I said, 'and you are my father and maker.'"}, {"w": "scientist", "m": "科学者", "s": "People called Victor Frankenstein a great scientist, but nobody gave me a name."}, {"w": "horror", "m": "恐怖", "s": "When Victor saw me move, his face filled with horror."}, {"w": "cottage", "m": "小屋・田舎家", "s": "Through a crack in the wall, I watched the family who lived in the cottage."}, {"w": "blind", "m": "目の見えない", "s": "The old father was blind, so he never saw my ugly face."}, {"w": "stick", "m": "棒", "s": "The son beat me with a stick, and the daughter fell down in fear."}, {"w": "hope", "m": "希望", "s": "'I promise,' I said, and for the first time in my life, I had hope."}, {"w": "envelope", "m": "封筒", "s": "At two o'clock, I opened the envelope and found a bank note inside."}, {"w": "restaurant", "m": "レストラン", "s": "I went into a small restaurant and ate a large, delicious meal."}, {"w": "tailor", "m": "仕立て屋", "s": "Next, I asked a tailor for a cheap suit of clothes."}, {"w": "credit", "m": "つけ・信用払い", "s": "Every shop was glad to sell me things on credit."}, {"w": "famous", "m": "有名な", "s": "He wanted to use my famous name for his business plan."}, {"w": "hotel", "m": "ホテル", "s": "I stayed in a fine hotel, and the owner never asked me to pay."}, {"w": "frame", "m": "額・額縁", "s": "The famous note now hangs in a frame on our wall at home."}]};
+
+/* ============ 状態 ============ */
+const LS_KEY = "spell_write_v1";
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const todayStr = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); };
+let storageMode = "local";
+(function probe(){ try { localStorage.setItem("__sw_probe__","1"); localStorage.removeItem("__sw_probe__"); } catch(e){ storageMode = "memory"; } })();
+function showStorageBanner(){
+  if ($("storageBanner")) return;
+  const div = document.createElement("div");
+  div.id = "storageBanner";
+  div.style.cssText = "background:#fdf3d7;border:1px solid #e3d194;color:#6b5510;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13.5px;line-height:1.75";
+  div.innerHTML = "<b>⚠ この開き方では、学習記録を保存できません。</b><br>ファイルのプレビュー表示やプライベートブラウズでは保存機能が使えないためです。通常のブラウザで開くと記録が残ります。" +
+    '<div style="margin-top:8px"><button class="btn small" onclick="this.parentElement.parentElement.remove()">分かりました（閉じる）</button></div>';
+  const main = document.querySelector("main");
+  if (main) main.insertBefore(div, main.firstChild);
+}
+function defaultDB(){ return { prog: {}, custom: [], log: {}, settings: { theme: "light", style: "cursive" }, lastDeck: null }; }
+let DB;
+function loadDB(){ if (storageMode === "memory") return defaultDB(); try { const r = localStorage.getItem(LS_KEY); if (r) { const d = JSON.parse(r); if (d && d.prog) return d; } } catch(e){} return defaultDB(); }
+let quotaWarned = false;
+function saveDB(){ if (storageMode === "memory") return; try { localStorage.setItem(LS_KEY, JSON.stringify(DB)); } catch(e){ if (!quotaWarned){ quotaWarned = true; toast("保存容量がいっぱいです"); } } }
+DB = loadDB();
+let toastTimer = null;
+function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), 2400); }
+function applyTheme(){ document.documentElement.dataset.theme = DB.settings.theme === "dark" ? "dark" : ""; $("themeBtn").textContent = DB.settings.theme === "dark" ? "☀ ライト" : "🌙 ダーク"; }
+$("themeBtn").addEventListener("click", () => { DB.settings.theme = DB.settings.theme === "dark" ? "light" : "dark"; saveDB(); applyTheme(); });
+
+/* ============ デッキ ============ */
+function decks(){
+  const list = [
+    { id: "basic", name: "中学基本単語", desc: "まず身につけたい基本語", words: BASIC },
+    { id: "story1", name: "物語の単語 レベル1", desc: "ストーリーEnglish 序盤の単語", words: STORY_WORDS[1] },
+    { id: "story2", name: "物語の単語 レベル2", desc: "ストーリーEnglish 中盤の単語", words: STORY_WORDS[2] },
+    { id: "story3", name: "物語の単語 レベル3", desc: "ストーリーEnglish 終盤の単語", words: STORY_WORDS[3] },
+    { id: "story4", name: "物語の単語 レベル4", desc: "ストーリーEnglish 上級の単語", words: STORY_WORDS[4] },
+    { id: "storyall", name: "物語の単語 全レベル", desc: "全511語からランダムに", words: [...STORY_WORDS[1], ...STORY_WORDS[2], ...STORY_WORDS[3], ...STORY_WORDS[4]] }
+  ];
+  if (DB.custom.length) list.push({ id: "custom", name: "カスタムデッキ", desc: "取り込んだ自分の単語セット", words: DB.custom });
+  return list;
+}
+const deckOf = id => decks().find(d => d.id === id);
+const pkey = (deckId, w) => deckId + "|" + w;
+function progOf(deckId, w){ return DB.prog[pkey(deckId, w)] || null; }
+function masteredCount(deck){ return deck.words.filter(x => { const p = progOf(deck.id, x.w); return p && p.mark === "good"; }).length; }
+
+/* ============ ホーム ============ */
+function goto(view){
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  $("view-" + view).classList.add("active");
+  if (view === "home") renderHome();
+  window.scrollTo(0, 0);
+}
+function streakCount(){
+  let n = 0; const d = new Date();
+  if (!DB.log[todayStr()]) d.setDate(d.getDate() - 1);
+  while (true) {
+    const key = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+    if (DB.log[key]) { n++; d.setDate(d.getDate() - 1); } else break;
+  }
+  return n;
+}
+function renderHome(){
+  $("stToday").textContent = DB.log[todayStr()] || 0;
+  $("stStreak").textContent = streakCount();
+  let mastered = 0;
+  decks().forEach(d => { mastered += masteredCount(d); });
+  $("stMastered").textContent = mastered;
+  const wrap = $("deckList"); wrap.innerHTML = "";
+  decks().forEach(deck => {
+    const mc = masteredCount(deck);
+    const pct = deck.words.length ? Math.round(mc / deck.words.length * 100) : 0;
+    const b = document.createElement("button"); b.className = "deckcard";
+    b.innerHTML = '<div class="grow"><div class="nm">' + esc(deck.name) + '</div><div class="ds">' + esc(deck.desc) + '（全' + deck.words.length + '語）</div><div class="progressbar"><i style="width:' + pct + '%"></i></div></div>' +
+      '<div style="text-align:right"><div class="cnt">◎ ' + mc + '語</div><button class="btn small" data-words="' + deck.id + '" style="margin-top:6px">一覧</button></div>';
+    b.addEventListener("click", e => { if (e.target.dataset.words) return; startSession(deck.id); });
+    b.querySelector("[data-words]").addEventListener("click", () => showWords(deck.id));
+    wrap.appendChild(b);
+  });
+  $("customState").textContent = DB.custom.length ? "現在のカスタム：" + DB.custom.length + "語" : "";
+}
+$("customSaveBtn").addEventListener("click", () => {
+  const lines = $("customTa").value.split("\n").map(s => s.trim()).filter(Boolean);
+  const words = [];
+  lines.forEach(line => { const p = line.split(/[,\t]/); if (p.length >= 2 && p[0].trim()) words.push({ w: p[0].trim(), m: p[1].trim(), s: "" }); });
+  if (!words.length) { toast("「英単語,意味」の形で入力してください"); return; }
+  DB.custom = words; saveDB(); renderHome(); toast(words.length + "語を取り込みました");
+});
+$("customFileBtn").addEventListener("click", () => $("customFile").click());
+$("customFile").addEventListener("change", e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => { $("customTa").value = rd.result; $("customSaveBtn").click(); };
+  rd.readAsText(f); e.target.value = "";
+});
+
+/* ============ 単語一覧 ============ */
+let wordsDeckId = "basic";
+function showWords(deckId){ wordsDeckId = deckId; goto("words"); renderWords(); }
+function renderWords(){
+  const sel = $("wordsDeckSel");
+  sel.innerHTML = decks().map(d => '<option value="' + d.id + '"' + (d.id === wordsDeckId ? " selected" : "") + ">" + esc(d.name) + "</option>").join("");
+  const deck = deckOf(wordsDeckId);
+  const markBadge = p => !p ? '<span class="badge">未学習</span>' : p.mark === "good" ? '<span class="badge g">◎ 書けた</span>' : p.mark === "mid" ? '<span class="badge m">△ あいまい</span>' : '<span class="badge b">× 要練習</span>';
+  $("wordList").innerHTML = deck.words.map(x =>
+    '<div class="wordrow"><span class="w">' + esc(x.w) + '</span><span class="muted small grow">' + esc(x.m) + "</span>" + markBadge(progOf(deck.id, x.w)) + "</div>").join("");
+}
+$("wordsDeckSel").addEventListener("change", e => { wordsDeckId = e.target.value; renderWords(); });
+$("wordsBackBtn").addEventListener("click", () => goto("home"));
+$("resetDeckBtn").addEventListener("click", () => {
+  if (!confirm("このデッキの判定記録をすべて消します。よろしいですか？")) return;
+  Object.keys(DB.prog).forEach(k => { if (k.startsWith(wordsDeckId + "|")) delete DB.prog[k]; });
+  saveDB(); renderWords(); toast("リセットしました");
+});
+
+/* ============ TTS ============ */
+let enVoice = null;
+function pickVoice(){ const vs = speechSynthesis.getVoices(); enVoice = vs.find(v => v.lang === "en-US") || vs.find(v => v.lang && v.lang.startsWith("en")) || null; }
+if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text){
+  if (!("speechSynthesis" in window)) { toast("このブラウザは読み上げに対応していません"); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text); u.lang = "en-US"; u.rate = 0.9; if (enVoice) u.voice = enVoice;
+  speechSynthesis.speak(u);
+}
+</script>
+<script>
+/* ============ セッション ============ */
+const SESSION_N = 10;
+let sess = null; // {deckId, queue:[wordObj], idx, marks:{good,mid,bad}}
+function pickQueue(deck){
+  const bad = [], mid = [], fresh = [], good = [];
+  deck.words.forEach(x => {
+    const p = progOf(deck.id, x.w);
+    if (!p) fresh.push(x);
+    else if (p.mark === "bad") bad.push(x);
+    else if (p.mark === "mid") mid.push(x);
+    else good.push({ x, last: p.last || 0 });
+  });
+  const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  good.sort((a, b) => a.last - b.last);
+  const ordered = [...shuffle(bad), ...shuffle(mid), ...shuffle(fresh), ...good.map(g => g.x)];
+  return ordered.slice(0, SESSION_N);
+}
+function startSession(deckId){
+  const deck = deckOf(deckId); if (!deck) return;
+  DB.lastDeck = deckId; saveDB();
+  sess = { deckId, queue: pickQueue(deck), idx: 0, marks: { good: 0, mid: 0, bad: 0 } };
+  if (!sess.queue.length) { toast("単語がありません"); return; }
+  goto("practice");
+  loadWord();
+}
+$("againBtn").addEventListener("click", () => startSession(DB.lastDeck || "basic"));
+$("homeBtn").addEventListener("click", () => goto("home"));
+$("quitBtn").addEventListener("click", () => { sess = null; goto("home"); });
+
+/* ============ キャンバス ============ */
+const wrap = $("canvasWrap"), bgC = $("bgCanvas"), inkC = $("inkCanvas");
+const bctx = bgC.getContext("2d"), ictx = inkC.getContext("2d");
+const maskC = document.createElement("canvas");
+let CW = 0, CH = 0, DPR = 1;
+let modelFont = "", modelX = 0, modelY = 0, modelW = 0;
+let targets = [], coveredSet = new Set(), targetIndex = new Map();
+let strokes = [], curStroke = null;
+let phase = "trace"; // trace | recall | check
+let styleMode = DB.settings.style || "cursive";
+const FONT_STACK = {
+  cursive: '"Dancing Script","Snell Roundhand","Apple Chancery","Segoe Script",cursive',
+  print: '"Comic Sans MS","Chalkboard SE","Segoe Print","Hiragino Maru Gothic ProN",sans-serif'
+};
+function lineYs(){
+  return { asc: CH * 0.14, xh: CH * 0.40, base: CH * 0.66, desc: CH * 0.92 };
+}
+function fitModel(word){
+  const ys = lineYs();
+  let size = (ys.base - ys.asc) * (styleMode === "cursive" ? 1.5 : 1.28);
+  const test = maskC.getContext("2d");
+  const setF = s => { test.font = "700 " + s + "px " + FONT_STACK[styleMode]; };
+  setF(size);
+  let w = test.measureText(word).width;
+  const maxW = CW * 0.88;
+  if (w > maxW) { size = size * maxW / w; setF(size); w = test.measureText(word).width; }
+  modelFont = "700 " + size + "px " + FONT_STACK[styleMode];
+  modelW = w; modelX = (CW - w) / 2; modelY = ys.base;
+}
+function drawGuides(){
+  bctx.clearRect(0, 0, CW, CH);
+  const ys = lineYs();
+  const dark = DB.settings.theme === "dark";
+  const line = (y, color, dash) => { bctx.beginPath(); bctx.setLineDash(dash || []); bctx.strokeStyle = color; bctx.lineWidth = 1; bctx.moveTo(8, y); bctx.lineTo(CW - 8, y); bctx.stroke(); bctx.setLineDash([]); };
+  line(ys.asc, dark ? "#5a4a8a" : "#f0b7c8", [6, 5]);
+  line(ys.xh, dark ? "#4a5a8a" : "#a9c6f5", [6, 5]);
+  line(ys.base, dark ? "#8a7ab8" : "#7d6bd6", []);
+  line(ys.desc, dark ? "#5a4a8a" : "#f0b7c8", [6, 5]);
+  bctx.font = "10px sans-serif"; bctx.fillStyle = dark ? "#6a5f96" : "#b3a8d9"; bctx.textAlign = "left";
+  bctx.fillText("ascender", 10, ys.asc - 3); bctx.fillText("x-height", 10, ys.xh - 3); bctx.fillText("baseline", 10, ys.base - 3); bctx.fillText("descender", 10, ys.desc - 3);
+}
+function drawModel(color, clipW){
+  // ガイドの上に見本を描く（ガイドは消さずに重ねるため、まずガイド再描画）
+  drawGuides();
+  const word = sess.queue[sess.idx].w;
+  bctx.save();
+  if (clipW != null) { bctx.beginPath(); bctx.rect(0, 0, modelX + clipW, CH); bctx.clip(); }
+  bctx.font = modelFont; bctx.textAlign = "left"; bctx.textBaseline = "alphabetic";
+  bctx.fillStyle = color;
+  bctx.fillText(word, modelX, modelY);
+  bctx.restore();
+}
+function buildTargets(){
+  targets = []; coveredSet = new Set(); targetIndex = new Map();
+  const mctx = maskC.getContext("2d");
+  mctx.clearRect(0, 0, CW, CH);
+  mctx.font = modelFont; mctx.textAlign = "left"; mctx.textBaseline = "alphabetic";
+  mctx.fillStyle = "#000";
+  mctx.fillText(sess.queue[sess.idx].w, modelX, modelY);
+  const step = 5;
+  const img = mctx.getImageData(0, 0, CW, CH).data;
+  for (let y = 0; y < CH; y += step) {
+    for (let x = 0; x < CW; x += step) {
+      if (img[(y * CW + x) * 4 + 3] > 100) {
+        const id = targets.length;
+        targets.push({ x, y });
+        const cell = Math.floor(x / 16) + ":" + Math.floor(y / 16);
+        if (!targetIndex.has(cell)) targetIndex.set(cell, []);
+        targetIndex.get(cell).push(id);
+      }
+    }
+  }
+  updateCover();
+}
+function updateCover(){
+  const pct = targets.length ? Math.round(coveredSet.size / targets.length * 100) : 0;
+  $("coverPct").textContent = pct + "%";
+  $("coverBar").style.width = pct + "%";
+  return pct;
+}
+function markCovered(x, y){
+  const R = 13;
+  const cx = Math.floor(x / 16), cy = Math.floor(y / 16);
+  for (let gx = cx - 1; gx <= cx + 1; gx++) for (let gy = cy - 1; gy <= cy + 1; gy++) {
+    const ids = targetIndex.get(gx + ":" + gy); if (!ids) continue;
+    for (const id of ids) {
+      if (coveredSet.has(id)) continue;
+      const t = targets[id];
+      if ((t.x - x) * (t.x - x) + (t.y - y) * (t.y - y) <= R * R) coveredSet.add(id);
+    }
+  }
+}
+/* --- ペン描画 --- */
+function setupCanvas(){
+  const r = wrap.getBoundingClientRect();
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  CW = Math.round(r.width); CH = Math.round(r.height);
+  [bgC, inkC].forEach(c => { c.width = CW * DPR; c.height = CH * DPR; });
+  [bctx, ictx].forEach(x => x.setTransform(DPR, 0, 0, DPR, 0, 0));
+  // マスクは解析専用なのでCSSピクセル等倍（座標を描画と一致させる）
+  maskC.width = CW; maskC.height = CH;
+  maskC.getContext("2d").setTransform(1, 0, 0, 1, 0, 0);
+  ictx.lineCap = "round"; ictx.lineJoin = "round";
+  drawGuides();
+}
+function redrawInk(){
+  ictx.clearRect(0, 0, CW, CH);
+  for (const st of strokes) drawStroke(st);
+}
+function drawStroke(st){
+  if (!st.length) return;
+  ictx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--ink") || "#2c2440";
+  if (st.length === 1) {
+    ictx.beginPath(); ictx.fillStyle = ictx.strokeStyle;
+    ictx.arc(st[0].x, st[0].y, st[0].w / 2, 0, Math.PI * 2); ictx.fill(); return;
+  }
+  for (let i = 1; i < st.length; i++) {
+    const p0 = st[i - 1], p1 = st[i];
+    const mx = (p0.x + p1.x) / 2, my = (p0.y + p1.y) / 2;
+    ictx.beginPath();
+    ictx.lineWidth = p1.w;
+    ictx.moveTo(i === 1 ? p0.x : (st[i - 2].x + p0.x) / 2, i === 1 ? p0.y : (st[i - 2].y + p0.y) / 2);
+    ictx.quadraticCurveTo(p0.x, p0.y, mx, my);
+    ictx.stroke();
+  }
+}
+function posOf(e){ const r = inkC.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+let lastPoint = null, lastTime = 0;
+inkC.addEventListener("pointerdown", e => {
+  if (phase === "check") return;
+  e.preventDefault();
+  inkC.setPointerCapture(e.pointerId);
+  const p = posOf(e);
+  const wdt = e.pressure > 0 ? 2 + e.pressure * 5 : 4.2;
+  curStroke = [{ x: p.x, y: p.y, w: wdt }];
+  lastPoint = p; lastTime = performance.now();
+  strokes.push(curStroke);
+  drawStroke(curStroke);
+  if (phase === "trace") { markCovered(p.x, p.y); updateCover(); }
+});
+inkC.addEventListener("pointermove", e => {
+  if (!curStroke) return;
+  e.preventDefault();
+  const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+  for (const ev of evs) {
+    const p = posOf(ev);
+    const now = performance.now();
+    const dt = Math.max(1, now - lastTime);
+    const dist = Math.hypot(p.x - lastPoint.x, p.y - lastPoint.y);
+    const vel = dist / dt; // px/ms
+    let wdt;
+    if (ev.pressure > 0) wdt = 2 + ev.pressure * 5;
+    else wdt = Math.max(2.2, Math.min(5.6, 5.2 - vel * 2.4));
+    curStroke.push({ x: p.x, y: p.y, w: wdt });
+    lastPoint = p; lastTime = now;
+    if (phase === "trace") markCovered(p.x, p.y);
+  }
+  drawStroke(curStroke);
+  if (phase === "trace") updateCover();
+});
+const endStroke = () => { curStroke = null; };
+inkC.addEventListener("pointerup", endStroke);
+inkC.addEventListener("pointercancel", endStroke);
+$("undoBtn").addEventListener("click", () => { strokes.pop(); redrawInk(); if (phase === "trace") { coveredSet = new Set(); strokes.forEach(st => st.forEach(p => markCovered(p.x, p.y))); updateCover(); } });
+$("clearBtn").addEventListener("click", () => { strokes = []; redrawInk(); if (phase === "trace") { coveredSet = new Set(); updateCover(); } });
+
+/* ============ 練習フロー ============ */
+function setPhaseTag(text, gold){ const t = $("phaseTag"); t.textContent = text; t.classList.toggle("goldp", !!gold); }
+function loadWord(){
+  const item = sess.queue[sess.idx];
+  phase = "trace";
+  strokes = []; curStroke = null;
+  $("sessLabel").textContent = deckOf(sess.deckId).name + "　" + (sess.idx + 1) + " / " + sess.queue.length + "語";
+  $("dots").innerHTML = sess.queue.map((_, i) => '<i class="' + (i < sess.idx ? "done" : i === sess.idx ? "now" : "") + '"></i>').join("");
+  $("meaningText").textContent = item.m;
+  $("exampleText").classList.remove("show"); $("exampleText").innerHTML = "";
+  $("hintBtn").style.display = "none";
+  setPhaseTag("① なぞろう");
+  $("coverRow").style.display = "";
+  $("editRow").style.display = "";
+  $("markRow").style.display = "none";
+  $("phaseBtn").textContent = "なぞり終わり →";
+  document.querySelectorAll("#styleSeg button").forEach(b => b.classList.toggle("on", b.dataset.style === styleMode));
+  setupCanvas();
+  fitModel(item.w);
+  drawModel("rgba(61,43,143,0.20)");
+  buildTargets();
+  redrawInk();
+}
+$("styleSeg").addEventListener("click", e => {
+  const b = e.target.closest("[data-style]"); if (!b) return;
+  styleMode = b.dataset.style; DB.settings.style = styleMode; saveDB();
+  document.querySelectorAll("#styleSeg button").forEach(x => x.classList.toggle("on", x === b));
+  if (!sess) return;
+  const item = sess.queue[sess.idx];
+  fitModel(item.w);
+  if (phase === "trace") { drawModel("rgba(61,43,143,0.20)"); buildTargets(); strokes.forEach(st => st.forEach(p => markCovered(p.x, p.y))); updateCover(); }
+  else if (phase === "check") drawModel("rgba(210,154,46,0.85)");
+  else drawGuides();
+});
+$("speakBtn").addEventListener("click", () => { if (sess) speak(sess.queue[sess.idx].w); });
+$("hintBtn").addEventListener("click", () => {
+  if (!sess) return;
+  const w = sess.queue[sess.idx].w;
+  toast("最初の文字は「" + w[0] + "」、全部で " + w.length + " 文字です");
+});
+$("phaseBtn").addEventListener("click", () => {
+  if (!sess) return;
+  if (phase === "trace") {
+    phase = "recall";
+    strokes = []; redrawInk();
+    drawGuides();
+    setPhaseTag("② 思い出して書こう", true);
+    $("coverRow").style.display = "none";
+    $("phaseBtn").textContent = "答え合わせ →";
+    $("hintBtn").style.display = "";
+    speak(sess.queue[sess.idx].w);
+  } else if (phase === "recall") {
+    phase = "check";
+    setPhaseTag("③ 答え合わせ");
+    $("editRow").style.display = "none";
+    $("markRow").style.display = "";
+    $("hintBtn").style.display = "none";
+    const item = sess.queue[sess.idx];
+    if (item.s) { $("exampleText").innerHTML = "例文：" + esc(item.s); $("exampleText").classList.add("show"); }
+    animateModel();
+    speak(item.w);
+  }
+});
+function animateModel(){
+  const word = sess.queue[sess.idx].w;
+  const start = performance.now(), dur = 1100;
+  const step = now => {
+    const t = Math.min(1, (now - start) / dur);
+    drawModel("rgba(210,154,46,0.88)", modelW * t);
+    if (t < 1 && phase === "check") requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+  void word;
+}
+document.querySelectorAll("#markRow [data-mark]").forEach(b => b.addEventListener("click", () => {
+  if (!sess || phase !== "check") return;
+  const mark = b.dataset.mark;
+  const item = sess.queue[sess.idx];
+  DB.prog[pkey(sess.deckId, item.w)] = { mark, last: Date.now() };
+  const tk = todayStr();
+  DB.log[tk] = (DB.log[tk] || 0) + 1;
+  saveDB();
+  sess.marks[mark]++;
+  sess.idx++;
+  if (sess.idx >= sess.queue.length) {
+    $("sumGood").textContent = sess.marks.good;
+    $("sumMid").textContent = sess.marks.mid;
+    $("sumBad").textContent = sess.marks.bad;
+    $("sumNote").textContent = sess.marks.bad + sess.marks.mid > 0
+      ? "△と×の単語は、次回の練習で優先して出題されます。"
+      : "全て◎でした。この調子で続けましょう。";
+    const doneDeck = sess.deckId; sess = null;
+    DB.lastDeck = doneDeck; saveDB();
+    goto("result");
+  } else loadWord();
+}));
+window.addEventListener("resize", () => { if (sess && $("view-practice").classList.contains("active")) { const keep = strokes; setupCanvas(); fitModel(sess.queue[sess.idx].w); if (phase === "trace") { drawModel("rgba(61,43,143,0.20)"); buildTargets(); } else if (phase === "check") drawModel("rgba(210,154,46,0.88)"); strokes = keep; redrawInk(); } });
+
+/* ============ 初期化 ============ */
+(function init(){
+  applyTheme();
+  goto("home");
+  if (storageMode === "memory") showStorageBanner();
+  // 筆記体フォントの読み込み完了後に、表示中の見本を正しい寸法で描き直す
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => {
+    if (sess && $("view-practice").classList.contains("active")) {
+      fitModel(sess.queue[sess.idx].w);
+      if (phase === "trace") { drawModel("rgba(61,43,143,0.20)"); buildTargets(); strokes.forEach(st => st.forEach(p => markCovered(p.x, p.y))); updateCover(); }
+      else if (phase === "check") drawModel("rgba(210,154,46,0.88)");
+    }
+  });
+})();
+</script>
+</body>
+</html>
