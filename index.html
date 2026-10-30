@@ -69,6 +69,11 @@ h2.sec:first-child{margin-top:2px}
 .phaseTag{display:inline-block; font-size:12px; font-weight:700; padding:3px 10px; border-radius:99px; background:var(--soft); color:var(--indigo2); border:1px solid #cfc4f2}
 .phaseTag.goldp{background:var(--gold-soft); color:#8a6d14; border-color:#e8d29a}
 .canvasWrap{position:relative; width:100%; height:250px; border:2px solid var(--line); border-radius:14px; background:var(--paper); overflow:hidden; touch-action:none}
+.canvasWrap.expanded{position:fixed; inset:8px; height:auto; z-index:80; box-shadow:var(--shadow)}
+.canvasWrap .expandClose{display:none; position:absolute; top:8px; right:8px; z-index:5}
+.canvasWrap.expanded .expandClose{display:inline-flex}
+.longHint{display:none; margin-top:8px; font-size:13px; color:var(--mid); background:var(--gold-soft); border:1px solid #e8d29a; border-radius:10px; padding:8px 11px}
+.longHint.show{display:block}
 .canvasWrap canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
 #inkCanvas{touch-action:none}
 .coverRow{display:flex; align-items:center; gap:10px; margin-top:10px; font-size:13.5px}
@@ -174,11 +179,14 @@ details.help p,details.help li{font-size:13.5px; line-height:1.75}
     <div class="canvasWrap" id="canvasWrap">
       <canvas id="bgCanvas"></canvas>
       <canvas id="inkCanvas"></canvas>
+      <button class="btn small expandClose" id="expandCloseBtn">✕ 閉じる</button>
     </div>
+    <div class="longHint" id="longHint">📐 長い単語です。「⛶ 大きく書く」で画面いっぱいに広げたり、端末を横向きにすると書きやすくなります。</div>
     <div class="coverRow" id="coverRow"><span>なぞり度</span><div class="bar"><i id="coverBar"></i></div><b id="coverPct">0%</b></div>
     <div class="row" style="margin-top:12px" id="editRow">
       <button class="btn" id="undoBtn">↩ 1画もどす</button>
       <button class="btn" id="clearBtn">🗑 全部消す</button>
+      <button class="btn" id="expandBtn">⛶ 大きく書く</button>
       <span class="grow"></span>
       <button class="btn gold" id="phaseBtn" style="padding:11px 18px">なぞり終わり →</button>
     </div>
@@ -569,7 +577,9 @@ function setPhaseTag(text, gold){ const t = $("phaseTag"); t.textContent = text;
 function loadWord(){
   const item = sess.queue[sess.idx];
   phase = "trace";
+  if (expanded) setExpanded(false);
   strokes = []; curStroke = null;
+  $("longHint").classList.toggle("show", item.w.length >= 9);
   $("sessLabel").textContent = deckOf(sess.deckId).name + "　" + (sess.idx + 1) + " / " + sess.queue.length + "語";
   $("dots").innerHTML = sess.queue.map((_, i) => '<i class="' + (i < sess.idx ? "done" : i === sess.idx ? "now" : "") + '"></i>').join("");
   $("meaningText").textContent = item.m;
@@ -660,7 +670,27 @@ document.querySelectorAll("#markRow [data-mark]").forEach(b => b.addEventListene
     goto("result");
   } else loadWord();
 }));
-window.addEventListener("resize", () => { if (sess && $("view-practice").classList.contains("active")) { const keep = strokes; setupCanvas(); fitModel(sess.queue[sess.idx].w); if (phase === "trace") { drawModel("rgba(61,43,143,0.20)"); buildTargets(); } else if (phase === "check") drawModel("rgba(210,154,46,0.88)"); strokes = keep; redrawInk(); } });
+let expanded = false;
+function reflowCanvas(){
+  if (!sess) return;
+  const keep = strokes;
+  setupCanvas();
+  fitModel(sess.queue[sess.idx].w);
+  if (phase === "trace") { drawModel("rgba(61,43,143,0.20)"); buildTargets(); keep.forEach(st => st.forEach(p => markCovered(p.x, p.y))); updateCover(); }
+  else if (phase === "check") drawModel("rgba(210,154,46,0.88)");
+  else drawGuides();
+  strokes = keep;
+  redrawInk();
+}
+function setExpanded(on){
+  expanded = on;
+  wrap.classList.toggle("expanded", on);
+  $("expandBtn").textContent = on ? "✕ もとの大きさ" : "⛶ 大きく書く";
+  requestAnimationFrame(reflowCanvas);
+}
+$("expandBtn").addEventListener("click", () => setExpanded(!expanded));
+$("expandCloseBtn").addEventListener("click", () => setExpanded(false));
+window.addEventListener("resize", () => { if (sess && $("view-practice").classList.contains("active")) reflowCanvas(); });
 
 /* ============ 初期化 ============ */
 (function init(){
